@@ -1,5 +1,70 @@
 import sqlite3
 
+def add_student():
+        name = input("Enter student's name: ")
+        try:
+            age = int(input("Enter student's age: "))
+        except:
+            print("Enter a valid age.")
+        try:
+            gpa = float(input("Enter student's GPA: "))
+        except:
+             print("Enter a valid GPA.")
+        cursor.execute("""
+        INSERT INTO students 
+        (name, age, gpa)
+
+        VALUES (?, ?, ?)
+        """, (name, age, gpa))
+
+        connection.commit()
+
+def show_students():
+        cursor.execute("""
+        SELECT * FROM students
+        """)
+        read = cursor.fetchall()
+
+        for student in read:
+            print("--------------------")
+
+            print(f"ID: {student[0]}")
+
+            print(f"Name: {student[1]}")
+
+            print(f"Age: {student[2]}")
+
+            print(f"GPA: {student[3]}")
+
+def update_gpa():
+        student_id = int(input("Enter student ID: "))
+        try:
+            new_gpa = float(input("Enter new GPA: "))
+        except:
+             print("Enter a valid GPA.")
+        cursor.execute("""
+        UPDATE students
+
+        SET gpa = ?
+
+        WHERE id = ?
+        """, (new_gpa, student_id))
+
+        connection.commit()
+
+def delete_student():
+        try:
+            student_id = int(input("Enter student ID: "))
+        except:
+             print("Enter a valid student ID.")
+        cursor.execute("""
+        DELETE FROM students
+
+        WHERE id = ?
+        """, (student_id,))
+
+        connection.commit()
+
 connection = sqlite3.connect("students.db")
 
 cursor = connection.cursor()
@@ -26,58 +91,16 @@ while exit==0:
     choice = input("User Choice: ")
 
     if choice == "1":
-
-        name = input("Enter student's name: ")
-        age = int(input("Enter student's age: "))
-        gpa = float(input("Enter student's GPA: "))
-        cursor.execute("""
-        INSERT INTO students 
-        (name, age, gpa)
-
-        VALUES (?, ?, ?)
-        """, (name, age, gpa))
-
-        connection.commit()
+        add_student()
     
     elif choice == "2": 
-        cursor.execute("""
-        SELECT * FROM students
-        """)
-        read = cursor.fetchall()
-
-        for student in read:
-            print("--------------------")
-
-            print(f"ID: {student[0]}")
-
-            print(f"Name: {student[1]}")
-
-            print(f"Age: {student[2]}")
-
-            print(f"GPA: {student[3]}")
+        show_students()
     
     elif choice == "3":
-        student_id = int(input("Enter student ID: "))
-        new_gpa = float(input("Enter new GPA: "))
-        cursor.execute("""
-        UPDATE students
-
-        SET gpa = ?
-
-        WHERE id = ?
-        """, (new_gpa, student_id))
-
-        connection.commit()
+        update_gpa()
     
     elif choice == "4":
-        student_id = int(input("Enter student ID: "))
-        cursor.execute("""
-        DELETE FROM students
-
-        WHERE id = ?
-        """, (student_id,))
-
-        connection.commit()
+        delete_student()
 
     elif choice == "5":
         connection.close()

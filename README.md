@@ -1,21 +1,34 @@
 # Student Management System
 
-A simple command-line Student Management System built with Python and SQLite.
+A command-line application built with Python and SQLite that demonstrates CRUD operations and basic database management.
 
 ## Features
 
 - Add Student
-- Show Students
-- Update Student GPA
+- View Students
+- Update GPA
 - Delete Student
-- SQLite Database
-- CRUD Operations
+- Input validation
+- SQLite database
 
 ## Technologies
 
 - Python
 - SQLite
 - Git
+
+## How to Run
+
+```bash
+python main.py
+```
+
+## Future Improvements
+
+- Search student
+- Update all student information
+- GUI
+- Export to CSV
 
 ## Author
 

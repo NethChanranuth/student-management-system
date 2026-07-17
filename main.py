@@ -1,75 +1,5 @@
-import sqlite3
-
-connection = sqlite3.connect("students.db")
-
-cursor = connection.cursor()
-
-def add_student():
-        name = input("Enter student's name: ")
-        try:
-            age = int(input("Enter student's age: "))
-        except ValueError:
-            print("Enter a valid age.")
-            return
-        try:
-            gpa = float(input("Enter student's GPA: "))
-        except ValueError:
-             print("Enter a valid GPA.")
-             return
-        cursor.execute("""
-        INSERT INTO students 
-        (name, age, gpa)
-
-        VALUES (?, ?, ?)
-        """, (name, age, gpa))
-
-        connection.commit()
-
-def show_students():
-        cursor.execute("""
-        SELECT * FROM students
-        """)
-        read = cursor.fetchall()
-
-        for student in read:
-            print("--------------------")
-
-            print(f"ID: {student[0]}")
-
-            print(f"Name: {student[1]}")
-
-            print(f"Age: {student[2]}")
-
-            print(f"GPA: {student[3]}")
-
-def update_gpa():
-        student_id = int(input("Enter student ID: "))
-        try:
-            new_gpa = float(input("Enter new GPA: "))
-        except:
-             print("Enter a valid GPA.")
-        cursor.execute("""
-        UPDATE students
-
-        SET gpa = ?
-
-        WHERE id = ?
-        """, (new_gpa, student_id))
-
-        connection.commit()
-
-def delete_student():
-        try:
-            student_id = int(input("Enter student ID: "))
-        except:
-             print("Enter a valid student ID.")
-        cursor.execute("""
-        DELETE FROM students
-
-        WHERE id = ?
-        """, (student_id,))
-
-        connection.commit()
+from database import *
+from crud import *
 
 def main():
 
@@ -95,16 +25,16 @@ def main():
         choice = input("User Choice: ")
 
         if choice == "1":
-            add_student()
+            add_student(connection)
         
         elif choice == "2": 
-            show_students()
+            show_students(connection)
         
         elif choice == "3":
-            update_gpa()
+            update_gpa(connection)
         
         elif choice == "4":
-            delete_student()
+            delete_student(connection)
 
         elif choice == "5":
             connection.close()

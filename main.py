@@ -4,12 +4,14 @@ def add_student():
         name = input("Enter student's name: ")
         try:
             age = int(input("Enter student's age: "))
-        except:
+        except ValueError:
             print("Enter a valid age.")
+            return
         try:
             gpa = float(input("Enter student's GPA: "))
-        except:
+        except ValueError:
              print("Enter a valid GPA.")
+             return
         cursor.execute("""
         INSERT INTO students 
         (name, age, gpa)
@@ -65,49 +67,50 @@ def delete_student():
 
         connection.commit()
 
-connection = sqlite3.connect("students.db")
+def main():
+    connection = sqlite3.connect("students.db")
 
-cursor = connection.cursor()
+    cursor = connection.cursor()
 
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS students (
-    id INTEGER PRIMARY KEY,
-    name TEXT,
-    age INTEGER,
-    gpa REAL
-);
-""")
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS students (
+        id INTEGER PRIMARY KEY,
+        name TEXT,
+        age INTEGER,
+        gpa REAL
+    );
+    """)
 
-exit = 0
+    running = True
 
-while exit==0:
-    print("------Student Management System------")
-    print("1. Add Student")
-    print("2. Show all students")
-    print("3. Update Student's GPA")
-    print("4. Delete Student")
-    print("5. Exit Application")
+    while running:
+        print("------Student Management System------")
+        print("1. Add Student")
+        print("2. Show all students")
+        print("3. Update Student's GPA")
+        print("4. Delete Student")
+        print("5. Exit Application")
 
-    choice = input("User Choice: ")
+        choice = input("User Choice: ")
 
-    if choice == "1":
-        add_student()
-    
-    elif choice == "2": 
-        show_students()
-    
-    elif choice == "3":
-        update_gpa()
-    
-    elif choice == "4":
-        delete_student()
+        if choice == "1":
+            add_student()
+        
+        elif choice == "2": 
+            show_students()
+        
+        elif choice == "3":
+            update_gpa()
+        
+        elif choice == "4":
+            delete_student()
 
-    elif choice == "5":
-        connection.close()
-        exit = 1
-    
-    else:
-        print("Invalid choice.")
+        elif choice == "5":
+            connection.close()
+            running = False
+        
+        else:
+            print("Invalid choice.")
 
 if __name__ == "__main__":
     main()

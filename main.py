@@ -1,5 +1,9 @@
 import sqlite3
 
+connection = sqlite3.connect("students.db")
+
+cursor = connection.cursor()
+
 def add_student():
         name = input("Enter student's name: ")
         try:
@@ -68,9 +72,6 @@ def delete_student():
         connection.commit()
 
 def main():
-    connection = sqlite3.connect("students.db")
-
-    cursor = connection.cursor()
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS students (
